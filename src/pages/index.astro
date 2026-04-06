@@ -1,44 +1,38 @@
 ---
-const title = "Test zaplecza SEO – artykuł próbny";
-const description = "To jest testowa strona zapleczowa pod SEO i AI.";
+import fs from 'fs';
+import path from 'path';
+
+const pagesDir = path.resolve('./src/pages');
+
+const files = fs.readdirSync(pagesDir)
+  .filter(file => file.endsWith('.astro') && file !== 'index.astro');
+
+const articles = files.map(file => {
+  return {
+    slug: file.replace('.astro', ''),
+    title: file.replace('.astro', '').replace(/-/g, ' ')
+  };
+});
 ---
 
 <html lang="pl">
   <head>
     <meta charset="UTF-8" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <title>Zaplecze SEO – szkło i kryształ</title>
+    <meta name="description" content="Lista artykułów o szkle i kryształach." />
   </head>
-  <body style="max-width:800px;margin:40px auto;font-family:Arial;line-height:1.6;">
-    
-    <h1>Test zaplecza SEO – pierwsza strona</h1>
 
-    <p>
-      To jest pierwsza testowa strona zapleczowa oparta o Cloudflare Pages i Astro.
-      Strona została stworzona w celu budowania zaplecza SEO oraz testowania publikacji treści.
-    </p>
+  <body style="font-family: Arial; max-width: 800px; margin: 40px auto; line-height: 1.7;">
+    <h1>Zaplecze SEO – szkło i kryształ</h1>
 
-    <h2>Dlaczego warto tworzyć zaplecze SEO?</h2>
+    <h2>Lista artykułów:</h2>
 
-    <p>
-      Zaplecze SEO pozwala budować autorytet domeny oraz wzmacniać pozycjonowanie strony głównej.
-      Dzięki odpowiedniej strukturze i linkowaniu można znacząco poprawić widoczność w Google.
-    </p>
-
-    <h2>Linkowanie wewnętrzne i zewnętrzne</h2>
-
-    <p>
-      Przykładowy link:
-      <a href="https://twojbarek.pl" target="_blank">
-        domowy barek – poradnik
-      </a>
-    </p>
-
-    <h2>Test indeksacji</h2>
-
-    <p>
-      Ta strona będzie wykorzystana do testów indeksacji oraz działania AI Overview.
-    </p>
-
+    <ul>
+      {articles.map(article => (
+        <li>
+          <a href={`/${article.slug}`}>{article.title}</a>
+        </li>
+      ))}
+    </ul>
   </body>
 </html>
